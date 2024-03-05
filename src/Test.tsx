@@ -1,15 +1,53 @@
 import React from 'react';
-import { useTimer } from './UseTimer';
+import { useCountdown } from './useCountdown';
+import { Box, Button, Group, Progress, Stack, Title } from '@mantine/core';
+
+const delay: number = 5 * 1000;
 
 const Test: React.FC = () => {
-    const { isPaused, pause, resume } = useTimer(() => console.log('END'), 10000, { autoInvoke: false });
+    const { remainingTime, paused, ended, actions } = useCountdown(
+        delay,
+        1000,
+        () => console.log('END via callback'),
+        { autoInvoke: false }
+    );
 
-    console.log(isPaused);
+    React.useEffect(() => {
+        true === ended &&
+            console.log('END via state');
+    }, [ended]);
 
     return (
-        <button onClick={() => isPaused ? resume() : pause()}>
-            {isPaused ? `Resume` : 'Pause'}
-        </button>
+        <>
+            <Stack py='xl' align='center'>
+                <Title order={1}>
+                    {(remainingTime / 1000).toFixed(2)}
+                </Title>
+                <Group>
+                    <Button onClick={() => actions.start()}>
+                        {`Start`}
+                    </Button>
+                    <Button onClick={() => actions.start(delay/2)}>
+                        {`Start at (delay / 2)`}
+                    </Button>
+                    <Button onClick={() => paused ? actions.resume() : actions.pause()}>
+                        {paused ? 'Resume' : 'Pause'}
+                    </Button>
+                    <Button onClick={() => actions.reset()}>
+                        {`Reset`}
+                    </Button>
+                </Group>
+            </Stack>
+            <Box px='xl'>
+                <Progress
+                    color='yellow'
+                    size='lg'
+                    radius='lg'
+                    value={100 - remainingTime * 100 / delay}
+                    transitionDuration={1000}
+                />
+            </Box>
+        </>
     );
 };
 

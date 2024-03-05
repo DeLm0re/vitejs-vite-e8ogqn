@@ -1,0 +1,70 @@
+{
+    "env": {
+        "browser": true,
+        "es2022": true,
+        "es6": true,
+        "node": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react/recommended"
+    ],
+    // Mandatory to detect deprecations
+    "overrides": [
+        {
+            "files": [
+                "*.ts",
+                "*.tsx"
+            ],
+            "parserOptions": {
+                "project": [
+                    "./tsconfig.json"
+                ]
+            },
+            "plugins": [
+                "deprecation"
+            ],
+            "rules": {
+                "deprecation/deprecation": "warn"
+            }
+        }
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "plugins": [
+        "@typescript-eslint",
+        "react",
+        "react-hooks",
+        "react-refresh"
+    ],
+    "rules": {
+        "@typescript-eslint/consistent-type-imports": "error",
+        "@typescript-eslint/member-delimiter-style": [
+            "error",
+            {
+                "multiline": {
+                    "delimiter": "comma",
+                    "requireLast": true
+                },
+                "singleline": {
+                    "delimiter": "comma",
+                    "requireLast": false
+                }
+            }
+        ],
+        // Prevent arrow functions to have useless parenthesis
+        "arrow-parens": ["error", "as-needed"],
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn",
+        "react-refresh/only-export-components": "error"
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    }
+}
